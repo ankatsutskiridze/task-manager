@@ -1,0 +1,84 @@
+<header>
+  <div class="side">
+    <div class="side__right">
+      <div class="side__right__logo" routerLink="/home">
+        <img src="/images/task-management.png"  />
+        <div class="side__right__logo--brand">Task Manager</div>
+      </div>
+    </div>
+    <div class="side__left">
+      <div class="side__left--createProject">
+        <button mat-flat-button (click)="createProject()">
+          create project
+        </button>
+      </div>
+
+      <div class="side__left--projects">
+        <a tabindex="0" [cdkMenuTriggerFor]="menu">
+          <span>projects</span>
+          <img src="/images/arrow.svg" />
+        </a>
+        <ng-template #menu>
+          <div class="menu">
+            <div class="menu__title">
+              <h4>your projects</h4>
+            </div>
+            <ul>
+              @for(project of projects$ | async ;track project){
+              <li (click)="getProjectById(project.id!)">
+                {{ project.name }}
+              </li>
+              }@empty {
+              <h3>No project</h3>
+              }
+            </ul>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="side__left--menu">
+        <button mat-icon-button [matMenuTriggerFor]="sideBarMenu">
+          <mat-icon
+            class="large-icon"
+            fontIcon="widgets
+          "
+          ></mat-icon>
+        </button>
+        <mat-menu #sideBarMenu="matMenu" xPosition="before" class="custom-mat">
+          <div class="info">
+            <img src="/images/account.png" />
+            <div class="info__details">
+              <div>
+                {{ authFacade.user.firstName }} {{ authFacade.user.lastName }}
+              </div>
+              <div class="info__details--email">
+                {{ authFacade.user.email }}
+              </div>
+            </div>
+          </div>
+          <div class="container">
+            <div
+              class="container__item"
+              [routerLink]="['/home/users']"
+              routerLinkActive="active"
+            >
+              <img src="/images/group.png" />
+              <div class="container__item--description">Users</div>
+            </div>
+            <div
+              class="container__item"
+              [routerLink]="['/home/roles']"
+              routerLinkActive="active"
+            >
+              <img src="/images/roles.png" />
+              <div class="container__item--description">Roles</div>
+            </div>
+          </div>
+          <div>
+            <div (click)="logout()" class="container__logout">Log out</div>
+          </div>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+</header>
